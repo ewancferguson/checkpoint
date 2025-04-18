@@ -1,4 +1,5 @@
 import { dbContext } from '../db/DbContext.js'
+import { Forbidden } from '../utils/Errors.js'
 class ReviewsService {
 
   async createReview(reviewData) {
@@ -16,5 +17,18 @@ class ReviewsService {
     return review
   }
 
+
+  async editReview(reviewId, reviewData, userId) {
+    const review = await dbContext.Review.findById(reviewId)
+    if (review.creatorId != userId) {
+      throw new Forbidden('You are not the creator of this review')
+    }
+    if (reviewData.body) review.body = reviewData.body ?? review.body
+    if (reviewData.rating) review.rating = reviewData.rating ?? review.rating
+    await review.save()
+    return review
+  }
+
 }
+
 export const reviewsService = new ReviewsService()

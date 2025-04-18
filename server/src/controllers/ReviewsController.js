@@ -11,6 +11,8 @@ export class ReviewsController extends BaseController {
       .get('/:reviewId', this.getById)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
+      .put('/:reviewId', this.editReview)
+
   }
 
 
@@ -52,5 +54,17 @@ export class ReviewsController extends BaseController {
       next(error)
     }
 
+  }
+
+  async editReview(request, response, next) {
+    try {
+      const reviewId = request.params.reviewId
+      const reviewData = request.body
+      const userId = request.userInfo.id
+      const review = await reviewsService.editReview(reviewId, reviewData, userId)
+      response.send(review)
+    } catch (error) {
+      next(error)
+    }
   }
 }
