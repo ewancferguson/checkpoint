@@ -11,7 +11,10 @@ class ReviewsService {
     return reviews
   }
 
+  async getById(reviewId) {
+    const review = (await (await dbContext.Review.findById(reviewId)).populate('creator', 'name picture')).populate('game', 'name background_image')
+    return review
+  }
+
 }
-
-
 export const reviewsService = new ReviewsService()
