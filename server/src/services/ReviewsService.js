@@ -46,6 +46,12 @@ class ReviewsService {
     return reviews
   }
 
+
+  async getProfileReviews(profileId) {
+    const reviews = await dbContext.Review.find({ creatorId: profileId }).populate('creator', 'name picture').populate('game', 'name background_image')
+    return reviews
+  }
+
 }
 
 export const reviewsService = new ReviewsService()
