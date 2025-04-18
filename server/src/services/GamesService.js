@@ -7,7 +7,7 @@ class GamesService {
   }
 
   async getById(gameId) {
-    const game = (await dbContext.Game.findOne({ id: gameId }))
+    const game = (await dbContext.Game.findOne({ gameId: gameId }))
     if (!game) {
       throw new Error('Game not found')
     }
