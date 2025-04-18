@@ -41,6 +41,11 @@ class ReviewsService {
     return 'Review deleted'
   }
 
+  async getReviewsByGameId(gameId) {
+    const reviews = await dbContext.Review.find({ gameId: gameId }).populate('creator', 'name picture').populate('game', 'name background_image')
+    return reviews
+  }
+
 }
 
 export const reviewsService = new ReviewsService()

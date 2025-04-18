@@ -1,4 +1,5 @@
 import { gamesService } from '../services/GamesService.js';
+import { reviewsService } from '../services/ReviewsService.js';
 import BaseController from "../utils/BaseController.js";
 
 
@@ -8,6 +9,7 @@ export class GamesController extends BaseController {
     this.router
       .get('', this.getAll)
       .get('/:gameId', this.getById)
+      .get('/:gameId/reviews', this.getReviewsByGameId)
   }
 
   /**
@@ -32,6 +34,16 @@ export class GamesController extends BaseController {
       const gameId = request.params.gameId
       const game = await gamesService.getById(gameId)
       response.send(game)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async getReviewsByGameId(request, response, next) {
+    try {
+      const gameId = request.params.gameId
+      const reviews = await reviewsService.getReviewsByGameId(gameId)
+      response.send(reviews)
     } catch (error) {
       next(error)
     }
