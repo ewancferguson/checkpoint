@@ -6,7 +6,13 @@ class GamesService {
     return games
   }
 
-
+  async getById(gameId) {
+    const game = (await dbContext.Game.findOne({ id: gameId }))
+    if (!game) {
+      throw new Error('Game not found')
+    }
+    return game
+  }
 
 }
 

@@ -7,7 +7,7 @@ export class GamesController extends BaseController {
     super('api/games')
     this.router
       .get('', this.getAll)
-      .get('/:id', this.getById)
+      .get('/:gameId', this.getById)
   }
 
   /**
@@ -29,7 +29,8 @@ export class GamesController extends BaseController {
 
   async getById(request, response, next) {
     try {
-      const game = await gamesService.getById(request.params.id)
+      const gameId = request.params.gameId
+      const game = await gamesService.getById(gameId)
       response.send(game)
     } catch (error) {
       next(error)
