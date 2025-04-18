@@ -4,18 +4,14 @@ import { Navbar } from './components/Navbar.js'
 export function App() {
 
   return (
-    <div className="App" id="app">
+    <div className="App bg-dark text-light" id="app">
       <header>
         <Navbar />
       </header>
 
       <main>
-        <Outlet />
+       <Outlet />
       </main>
-
-      <footer className="bg-dark text-light text-center p-3 ">
-        Made with 💖 by CodeWorks
-      </footer>
 
     </div>
   )
