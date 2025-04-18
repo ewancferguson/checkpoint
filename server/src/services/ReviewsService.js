@@ -29,6 +29,18 @@ class ReviewsService {
     return review
   }
 
+  async deleteReview(reviewId, userId) {
+    const review = await dbContext.Review.findById(reviewId)
+    if (!review) {
+      throw new Error('Review not found')
+    }
+    if (review.creatorId != userId) {
+      throw new Forbidden('You are not the creator of this review')
+    }
+    await review.deleteOne()
+    return 'Review deleted'
+  }
+
 }
 
 export const reviewsService = new ReviewsService()
