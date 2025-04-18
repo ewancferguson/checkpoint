@@ -3,13 +3,11 @@ import BaseController from "../utils/BaseController.js";
 import { reviewsService } from "../services/ReviewsService.js";
 
 
-
-
-
 export class ReviewsController extends BaseController {
   constructor() {
     super('api/reviews')
     this.router
+      .get('', this.getAll)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
 
@@ -26,5 +24,14 @@ export class ReviewsController extends BaseController {
       next(error)
     }
 
+  }
+
+  async getAll(request, response, next) {
+    try {
+      const reviews = await reviewsService.getAll()
+      response.send(reviews)
+    } catch (error) {
+      next(error)
+    }
   }
 }

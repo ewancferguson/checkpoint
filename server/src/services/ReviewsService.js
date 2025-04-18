@@ -6,6 +6,11 @@ class ReviewsService {
     return review
   }
 
+  async getAll() {
+    const reviews = await dbContext.Review.find().populate('creator', 'name picture').populate('game', 'name background_image')
+    return reviews
+  }
+
 }
 
 
