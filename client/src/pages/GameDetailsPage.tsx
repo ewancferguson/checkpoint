@@ -7,16 +7,20 @@ import { useEffect, useState } from "react";
 import { logger } from "../utils/Logger.js";
 import "../assets/scss/pages/GameDetailsPage.scss";
 import { DetailedGame } from "../models/DetailedGame.js";
+import { reviewsService } from "../services/ReviewsService.js";
+import GameDetailReview from "../components/GameDetailReview.js";
 
 function GameDetailsPage() {
   const { gameId } = useParams<{ gameId: string }>();
   
 
   const reviews = AppState.reviews || []; // Assuming reviews are in AppState
-  const game = AppState.activeGame || null; // Assuming activeGame is in AppState
+  const game = AppState.activeGame || null;
+   // Assuming activeGame is in AppState
   useEffect(() => {
     if (gameId) {
       GetGameById(gameId);
+      fetchReviewsByGameId(gameId);
     }
   }, [gameId]);
 
@@ -30,10 +34,23 @@ function GameDetailsPage() {
     }
   }
 
+  async function fetchReviewsByGameId(gameId: string) {
+    try {
+      await reviewsService.fetchReviewsByGameId(gameId);
+    }
+    catch (error: any) {
+      Pop.error(error);
+    }
+  }
+
+  const reviewcards = AppState.gameReviews?.slice().reverse().map(review => (<GameDetailReview key={review.id} review={review} />));
+
+  
+
   return (
     <div className="container-fluid bg-dark text-light py-5 px-md-5 min-vh-100">
       <div className="row g-4">
-        <div className="col-md-6">
+        <div className="col-md-5">
           {game ? (
             <div className="card bg-dark text-light shadow-sm">
               <img
@@ -69,21 +86,13 @@ function GameDetailsPage() {
           )}
         </div>
 
-        <div className="col-md-6">
+        <div className="col-md-7">
           <div className="card bg-dark text-light shadow-sm">
             <div className="card-body">
               <h4>Player Reviews</h4>
-              {reviews.length > 0 ? (
-                <ul className="list-group list-group-flush">
-                  {reviews.map((review, index) => (
-                    <li key={index} className="list-group-item bg-dark text-light border-0">
-                      
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No reviews available.</p>
-              )}
+                <div className="row">
+                  {reviewcards}
+                </div>
             </div>
           </div>
         </div>
