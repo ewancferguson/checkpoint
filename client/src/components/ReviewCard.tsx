@@ -6,7 +6,7 @@ import { Review } from "../models/Review.js";
 import { Link } from "react-router-dom";
 import Pop from "../utils/Pop.js";
 import { reviewsService } from "../services/ReviewsService.js";
-import Modal from "bootstrap/js/dist/modal";
+import { Modal } from "bootstrap";
 import ReviewModal from "./ReviewModal.js";
 import { observable } from "mobx";
 

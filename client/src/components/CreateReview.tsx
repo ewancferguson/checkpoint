@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AppState } from "../AppState";
 import Pop from "../utils/Pop";
 import { reviewsService } from "../services/ReviewsService";
+import { Modal } from "bootstrap";
 
 export default function CreateReview() {
   const [body, setBody] = useState<string>(""); // Explicitly define the type for body
@@ -22,6 +23,10 @@ async function createReview(formData: React.FormEvent<HTMLFormElement>) {
     }
     await reviewsService.createReview(reviewData)
     Pop.success('Review Created!')
+
+    setBody('')
+    setRating(0)
+    Modal.getOrCreateInstance('#createReview').hide()
   }
   catch (error: any){
     Pop.error(error);

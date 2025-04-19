@@ -22,27 +22,41 @@ function ReviewModal({ review }: { review: Review | null }) {
 
   async function updateReview(formData: React.FormEvent<HTMLFormElement>) {
     formData.preventDefault();
-  
+
     if (!review || !review.id) {
       Pop.error("Review is not available.");
       return;
     }
-  
+
     try {
       const reviewData = {
         body: editableBody,
         rating: editableRating,
       };
-  
+
       await reviewsService.updateReview(review.id, reviewData);
-      reviewsService.fetchReviews()
+      reviewsService.fetchReviews();
+      reviewsService.fetchReviewsByGameId(review.gameId.toString());
       Pop.success("Review Updated!");
-  
+
     } catch (error: any) {
       Pop.error(error);
     }
   }
-  
+
+
+  async function deleteReview(reviewId: string) {
+    try {
+      const yes = await Pop.confirm("Are you sure you want to delete this review?");
+      if (!yes) return;
+      Modal.getOrCreateInstance("#reviewModal").hide();
+      await reviewsService.deleteReview(reviewId);
+      Pop.success("Review Deleted!");
+    } catch (error: any) {
+      Pop.error(error);
+    }
+    
+  }
 
   return (
     <div
@@ -114,6 +128,16 @@ function ReviewModal({ review }: { review: Review | null }) {
                     >
                       View Game Details
                     </Link>
+
+                    {/* "Delete Review" button visible only for the creator */}
+                    {isCreator && (
+                      <button onClick={() => deleteReview(review.id)}
+                        type="button"
+                        className="btn btn-danger mt-3 ms-3"
+                      >
+                        Delete Review
+                      </button>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -122,7 +146,7 @@ function ReviewModal({ review }: { review: Review | null }) {
             </div>
             <div className="modal-footer border-secondary">
               {isCreator ? (
-                <button data-bs-dismiss="modal" type="submit"className="btn btn-primary">
+                <button type="submit" data-bs-dismiss="modal" className="btn btn-primary">
                   Save Changes
                 </button>
               ) : (

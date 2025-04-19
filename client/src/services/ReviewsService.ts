@@ -5,6 +5,14 @@ import { logger } from "../utils/Logger";
 import { api } from "./AxiosService";
 
 class ReviewsService {
+  async deleteReview(reviewId: string) {
+    const response = await api.delete(`api/reviews/${reviewId}`)
+    logger.log('deleting review', response.data)
+    const index = AppState.gameReviews?.findIndex(review => review.id === reviewId)
+    const index2 = AppState.reviews?.findIndex(review => review.id === reviewId)
+    AppState.gameReviews?.splice(index!, 1)
+    AppState.reviews?.splice(index2!, 1)
+  }
   async updateReview(reviewId: string, reviewData: { body: string; rating: number; }) {
     const response = await api.put(`api/reviews/${reviewId}`, reviewData)
     AppState.activeReview = new Review(response.data)

@@ -6,31 +6,30 @@ import Pop from "../utils/Pop";
 import ReviewModal from "./ReviewModal";
 import { observer } from "mobx-react";
 
-function GameDetailReview({ review }: { review: Review }){
+function GameDetailReview({ review }: { review: Review }) {
 
-
-
-   const activeReview = AppState.activeReview || null;
   
-    async function GetReviewById() {
-      try {
-        await reviewsService.getReviewById(review?.id);
-        Modal.getOrCreateInstance("#reviewModal").show();
-      }
-      catch (error: any) {
-        Pop.error(error);
-      }
+  const activeReview = AppState.activeReview;
+
+  async function GetReviewById() {
+    try {
+      
+      await reviewsService.getReviewById(review?.id);
+      Modal.getOrCreateInstance("#reviewModal").show();
+    } catch (error: any) {
+      Pop.error(error);
     }
+  }
 
-
-
-  return(
+  return (
     <div>
       <div className="game-review-card p-4 rounded shadow-sm bg-dark text-white mb-4">
         <div className="d-flex flex-column flex-md-row align-items-md-center">
           <div className="flex-grow-1">
             <h5 className="mb-1">{review.game?.name || "Unknown Game"}</h5>
-            <div className="text-white small mb-2">Reviewed by <strong className="text-white">{review.creator?.name || "Anonymous"}</strong> • {review.createdAt ? review.createdAt.toLocaleDateString() : "Unknown Date"}</div>
+            <div className="text-white small mb-2">
+              Reviewed by <strong className="text-white">{review.creator?.name || "Anonymous"}</strong> • {review.createdAt ? review.createdAt.toLocaleDateString() : "Unknown Date"}
+            </div>
             <p className="mb-2">
               {review.body.length > 100 ? review.body.slice(0, 100) + '...' : review.body}
             </p>
@@ -41,10 +40,10 @@ function GameDetailReview({ review }: { review: Review }){
           </div>
         </div>
       </div>
-       <ReviewModal review={activeReview} />
-    </div>
-  )
-}
 
+      <ReviewModal review={activeReview} />
+    </div>
+  );
+}
 
 export default observer(GameDetailReview);
