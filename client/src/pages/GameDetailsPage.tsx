@@ -16,6 +16,7 @@ function GameDetailsPage() {
 
   const reviews = AppState.reviews || [];
   const game = AppState.activeGame || null;
+  
 
   useEffect(() => {
     if (gameId) {
