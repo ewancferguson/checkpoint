@@ -9,14 +9,14 @@ import "../assets/scss/pages/GameDetailsPage.scss";
 import { DetailedGame } from "../models/DetailedGame.js";
 import { reviewsService } from "../services/ReviewsService.js";
 import GameDetailReview from "../components/GameDetailReview.js";
+import CreateReview from "../components/CreateReview.js";
 
 function GameDetailsPage() {
   const { gameId } = useParams<{ gameId: string }>();
-  
 
-  const reviews = AppState.reviews || []; // Assuming reviews are in AppState
+  const reviews = AppState.reviews || [];
   const game = AppState.activeGame || null;
-   // Assuming activeGame is in AppState
+
   useEffect(() => {
     if (gameId) {
       GetGameById(gameId);
@@ -28,7 +28,6 @@ function GameDetailsPage() {
     try {
       logger.log("getting game by id", gameId);
       await gamesService.getGameById(gameId);
-      
     } catch (error: any) {
       Pop.error(error);
     }
@@ -37,15 +36,14 @@ function GameDetailsPage() {
   async function fetchReviewsByGameId(gameId: string) {
     try {
       await reviewsService.fetchReviewsByGameId(gameId);
-    }
-    catch (error: any) {
+    } catch (error: any) {
       Pop.error(error);
     }
   }
 
-  const reviewcards = AppState.gameReviews?.slice().reverse().map(review => (<GameDetailReview key={review.id} review={review} />));
-
-  
+  const reviewcards = AppState.gameReviews?.slice().reverse().map(review => (
+    <GameDetailReview key={review.id} review={review} />
+  ));
 
   return (
     <div className="container-fluid bg-dark text-light py-5 px-md-5 min-vh-100">
@@ -65,19 +63,32 @@ function GameDetailsPage() {
                   <strong>Release Date:</strong> {game.released || "N/A"}
                 </p>
                 <p className="card-text">
-                  <strong>Description:</strong> {game.description_raw || "No description available."}
+                  <strong>Description:</strong>{" "}
+                  {game.description_raw || "No description available."}
                 </p>
                 <p className="card-text">
-                  <strong>Genres:</strong> {game.genres? game.genres.map((genre: any) => genre.name).join(", ") : "N/A"}
+                  <strong>Genres:</strong>{" "}
+                  {game.genres
+                    ? game.genres.map((genre: any) => genre.name).join(", ")
+                    : "N/A"}
                 </p>
                 <p className="card-text">
-                  <strong>Platforms:</strong> {game.platforms? game.platforms.map((platform: any) => platform.platform.name).join(", ") : "N/A"}
+                  <strong>Platforms:</strong>{" "}
+                  {game.platforms
+                    ? game.platforms
+                        .map((platform: any) => platform.platform.name)
+                        .join(", ")
+                    : "N/A"}
                 </p>
                 <p className="card-text">
-                  <strong>ESRB Rating:</strong> {game.esrb_rating ? game.esrb_rating.name : "N/A"}
+                  <strong>ESRB Rating:</strong>{" "}
+                  {game.esrb_rating ? game.esrb_rating.name : "N/A"}
                 </p>
                 <p className="card-text">
-                  <strong>Developers:</strong> {game.developers ? game.developers.map((dev: any) => dev.name).join(", ") : "N/A"}
+                  <strong>Developers:</strong>{" "}
+                  {game.developers
+                    ? game.developers.map((dev: any) => dev.name).join(", ")
+                    : "N/A"}
                 </p>
               </div>
             </div>
@@ -89,10 +100,18 @@ function GameDetailsPage() {
         <div className="col-md-7">
           <div className="card bg-dark text-light shadow-sm">
             <div className="card-body">
-              <h4>Player Reviews</h4>
-                <div className="row">
-                  {reviewcards}
-                </div>
+              <div className="mb-3">
+                <h4 className="mb-2">Player Reviews</h4>
+                <p className="mb-2">Want to share your thoughts about this game?</p>
+                <button data-bs-toggle="modal" data-bs-target="#createReview" className="btn btn-outline-primary btn-sm">
+                  ✍️ Write a Review
+                </button>
+                <CreateReview />
+              </div>
+
+              <div className="row">
+                {reviewcards}
+              </div>
             </div>
           </div>
         </div>
