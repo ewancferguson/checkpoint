@@ -26,7 +26,9 @@ class ReviewsService {
     if (reviewData.body) review.body = reviewData.body ?? review.body
     if (reviewData.rating) review.rating = reviewData.rating ?? review.rating
     await review.save()
-    return review
+    const populatedReview = await dbContext.Review.findById(reviewId).populate('creator', 'name picture').populate('game', 'name background_image')
+
+    return populatedReview
   }
 
   async deleteReview(reviewId, userId) {

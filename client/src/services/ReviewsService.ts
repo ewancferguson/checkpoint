@@ -5,6 +5,10 @@ import { logger } from "../utils/Logger";
 import { api } from "./AxiosService";
 
 class ReviewsService {
+  async updateReview(reviewId: string, reviewData: { body: string; rating: number; }) {
+    const response = await api.put(`api/reviews/${reviewId}`, reviewData)
+    AppState.activeReview = new Review(response.data)
+  }
   async getReviewById(ReviewId: string) {
     AppState.activeReview = null
     const response = await api.get(`api/reviews/${ReviewId}`)
