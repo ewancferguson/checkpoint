@@ -1,9 +1,15 @@
+import { App } from "../App";
 import { AppState } from "../AppState";
 import { Review } from "../models/Review";
 import { logger } from "../utils/Logger";
 import { api } from "./AxiosService";
 
 class ReviewsService {
+  async createReview(reviewData: object) {
+    const response = await api.post('api/reviews', reviewData)
+    logger.log('creating review', response)
+    AppState.gameReviews?.push(new Review(response.data))
+  }
   async fetchReviewsByGameId(gameId: string) {
     AppState.gameReviews = []
     const response = await api.get(`api/games/${gameId}/reviews`)
