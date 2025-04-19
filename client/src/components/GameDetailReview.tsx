@@ -1,6 +1,29 @@
+import { Modal } from "bootstrap";
+import { AppState } from "../AppState";
 import { Review } from "../models/Review";
+import { reviewsService } from "../services/ReviewsService";
+import Pop from "../utils/Pop";
+import ReviewModal from "./ReviewModal";
+import { observer } from "mobx-react";
 
-export default function GameDetailReview({ review }: { review: Review }){
+function GameDetailReview({ review }: { review: Review }){
+
+
+
+   const activeReview = AppState.activeReview || null;
+  
+    async function GetReviewById() {
+      try {
+        await reviewsService.getReviewById(review?.id);
+        Modal.getOrCreateInstance("#reviewModal").show();
+      }
+      catch (error: any) {
+        Pop.error(error);
+      }
+    }
+
+
+
   return(
     <div>
       <div className="game-review-card p-4 rounded shadow-sm bg-dark text-white mb-4">
@@ -13,11 +36,15 @@ export default function GameDetailReview({ review }: { review: Review }){
             </p>
             <div className="d-flex align-items-center gap-2">
               <span className="badge bg-success">{review.rating}/5 <span className="mdi mdi-star"></span></span>
-              <button className="btn btn-outline-light btn-sm">Read More</button>
+              <button onClick={GetReviewById} className="btn btn-outline-light btn-sm">Read More</button>
             </div>
           </div>
         </div>
       </div>
+       <ReviewModal review={activeReview} />
     </div>
   )
 }
+
+
+export default observer(GameDetailReview);
