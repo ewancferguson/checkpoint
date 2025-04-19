@@ -71,7 +71,7 @@ import { Link } from "react-router-dom";
             <button className="browse-btn mt-3">Browse All Games</button>
             </Link>
           </div>
-          <h4>All Reviews</h4>
+          <h4 className="mt-3">All Reviews</h4>
           <div className="row">
             {reviewcards}
           </div>
