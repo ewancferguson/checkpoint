@@ -8,6 +8,7 @@ import { reviewsService } from "../services/ReviewsService";
 import ReviewCard from "../components/ReviewCard";
 import GameCard from "../components/Gamecard";
 import { observer } from "mobx-react";
+import { Link } from "react-router-dom";
 
  function HomePage() {
   
@@ -66,7 +67,9 @@ import { observer } from "mobx-react";
             {gamecards}
           </div>
           <div className="center">
+            <Link to={"/games"}>
             <button className="browse-btn mt-3">Browse All Games</button>
+            </Link>
           </div>
           <h4>All Reviews</h4>
           <div className="row">

@@ -4,9 +4,10 @@ import { accountService } from './services/AccountService.ts';
 import AuthGuard from './utils/AuthGuard.js';
 import ErrorPage from './pages/ErrorPage.tsx';
 import HomePage from './pages/HomePage.tsx';
-import AboutPage from './pages/AboutPage.tsx';
+import AboutPage from './pages/GameListPage.tsx';
 import AccountPage from './pages/AccountPage.tsx';
 import GameDetailsPage from './pages/GameDetailsPage';
+import GameListPage from './pages/GameListPage.tsx';
 
 
 export const router = createHashRouter([
@@ -20,8 +21,8 @@ export const router = createHashRouter([
         element: <HomePage />,
       },
       {
-        path: "about",
-        element: <AboutPage />,
+        path: "games",
+        element: <GameListPage />,
       },
       {
         path: "account",
