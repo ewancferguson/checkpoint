@@ -6,6 +6,7 @@ import ErrorPage from './pages/ErrorPage.tsx';
 import HomePage from './pages/HomePage.tsx';
 import AboutPage from './pages/AboutPage.tsx';
 import AccountPage from './pages/AccountPage.tsx';
+import GameDetailsPage from './pages/GameDetailsPage';
 
 
 export const router = createHashRouter([
@@ -28,6 +29,10 @@ export const router = createHashRouter([
           <AuthGuard>
             <AccountPage />
           </AuthGuard>,
+      },
+      {
+        path: "games/:gameId",
+        element: <GameDetailsPage/>,
       },
     ],
   },

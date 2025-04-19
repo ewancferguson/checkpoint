@@ -4,6 +4,7 @@ import { Account } from './models/Account.js'
 import { Identity } from '@bcwdev/auth0provider-client'
 import { Game } from "./models/Game.ts"
 import { Review } from "./models/Review.ts"
+import { DetailedGame } from "./models/DetailedGame.ts"
 
 
 class ObservableAppState {
@@ -12,7 +13,7 @@ class ObservableAppState {
   account: Account | null = null
   games: Game[] | null = null
   reviews: Review[] | null = null
-
+  activeGame: DetailedGame | null = null
   constructor() {
     makeAutoObservable(this)
   }

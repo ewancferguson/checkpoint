@@ -7,8 +7,23 @@ export const api = Axios.create({
   timeout: 8000
 })
 
+
+const RAWG_API_KEY = '742e72e4a2b242a2a937b84bddd49fd5'
+
+export const rawgApi = Axios.create({
+  baseURL: 'https://api.rawg.io/api/',
+  timeout: 8000,
+  params: {
+    key: RAWG_API_KEY
+  }
+})
+
+
 api.interceptors.request.use(config => config, handleAxiosError)
 api.interceptors.response.use(response => response, handleAxiosError)
+
+rawgApi.interceptors.request.use(config => config, handleAxiosError)
+rawgApi.interceptors.response.use(response => response, handleAxiosError)
 
 function handleAxiosError(error: AxiosError): Promise<AxiosError> {
   if (error.response) {
