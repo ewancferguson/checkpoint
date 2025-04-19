@@ -8,6 +8,8 @@ import AboutPage from './pages/GameListPage.tsx';
 import AccountPage from './pages/AccountPage.tsx';
 import GameDetailsPage from './pages/GameDetailsPage';
 import GameListPage from './pages/GameListPage.tsx';
+import { Profile } from './models/Account.ts';
+import ProfilePage from './pages/ProfilePage.tsx';
 
 
 export const router = createHashRouter([
@@ -35,6 +37,10 @@ export const router = createHashRouter([
         path: "games/:gameId",
         element: <GameDetailsPage/>,
       },
+      {
+        path: "profile/:profileId",
+        element: <ProfilePage />,
+      }
     ],
   },
 ]);

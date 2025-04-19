@@ -19,10 +19,12 @@ export class Profile {
   id:string
   name: string
   picture: string
+  createdAt: Date
   constructor(data: Profile)
   {
     this.id = data.id
     this.name = data.name
     this.picture = data.picture
+    this.createdAt = new Date(data.createdAt)
   }
 }

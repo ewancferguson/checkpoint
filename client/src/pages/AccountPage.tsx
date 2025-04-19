@@ -19,7 +19,7 @@ const AccountPage = () => {
       setEditablePicture(account.picture);
     }
   }, [account?.name]);
-  const reviews = AppState.profileReviews
+  
 
   useEffect(() => {
     getReviewsByUserId();
@@ -62,7 +62,6 @@ const AccountPage = () => {
       <div className='container-fluid'>
 
       <div className="row">
-        {/* Top Section: User Info */}
         <div className="col-12 mb-4">
           <div className="d-flex align-items-center p-4 bg-secondary shadow rounded">
             <img
@@ -77,11 +76,8 @@ const AccountPage = () => {
             </div>
           </div>
         </div>
-
-        {/* Main Content: Tabs for Details and Edit Account */}
         <div className="col-12">
           <div className="card bg-secondary text-white shadow rounded">
-            {/* Tabs Nav */}
             <ul className="nav nav-tabs bg-dark px-3 pt-3 rounded-top" id="accountTab" role="tablist">
               <li className="nav-item" role="presentation">
                 <button
@@ -107,9 +103,7 @@ const AccountPage = () => {
                   </div>
 
             <div className="container mt-3"> 
-            {/* Tab Content */}
             <div className="tab-content">
-              {/* Details Tab */}
               <div
                 className={`tab-pane fade ${activeTab === 'details' ? 'show active' : ''}`}
                 id="details"
@@ -125,8 +119,6 @@ const AccountPage = () => {
                 </div>
                 </div>
               </div>
-
-              {/* Edit Account Tab */}
               <div
                 className={`tab-pane fade ${activeTab === 'edit' ? 'show active' : ''}`}
                 id="edit"

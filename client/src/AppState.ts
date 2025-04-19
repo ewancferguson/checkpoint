@@ -1,6 +1,6 @@
 import { action, makeAutoObservable } from "mobx"
 import { isValidProp } from "./utils/isValidProp.ts"
-import { Account } from './models/Account.js'
+import { Account, Profile } from './models/Account.js'
 import { Identity } from '@bcwdev/auth0provider-client'
 import { Game } from "./models/Game.ts"
 import { Review } from "./models/Review.ts"
@@ -17,6 +17,7 @@ class ObservableAppState {
   gameReviews: Review[] | null = null
   activeReview: Review | null = null
   profileReviews: Review[] | null = null
+  activeProfile: Profile | null = null
 
   constructor() {
     makeAutoObservable(this)
