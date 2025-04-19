@@ -17,7 +17,7 @@ export default function GameCard({ game }: { game: Game }) {
         <img src={game.background_image} className="card-img-top card-img mb-3" alt="Event cover image" />
       </div>
         <div className="card-body">
-      <h5 className="card-title">{ game.name }</h5>
+      <h5 className="card-title text-center">{ game.name }</h5>
         </div>
       </div>
     </div>

@@ -3,28 +3,46 @@ import '../assets/scss/pages/HomePage.scss'
 import Pop from "../utils/Pop";
 import { gamesService } from "../services/GamesService";
 import { AppState } from "../AppState";
-import Gamecard from "../components/Gamecard";
 
-export default function HomePage() {
-  const [count, setCount] = useState(0)
-  const games = AppState.games?.slice(0, 6).map(game => <Gamecard key={game.gameId} game={game} />)
+import { reviewsService } from "../services/ReviewsService";
+import ReviewCard from "../components/ReviewCard";
+import GameCard from "../components/Gamecard";
+import { observer } from "mobx-react";
 
-
+ function HomePage() {
+  
+  
   useEffect(() => {
     fetchGames()
+    fetchReviews()
   }, [])
+  
   
   
   async function fetchGames() {
     try {
       await gamesService.fetchGames()
+      
+
     }
     catch (error: any){
       Pop.error(error);
     }
   }
-
-
+  
+  const gamecards = AppState.games?.slice(0, 6).map(game => <GameCard key={game.gameId} game={game} />) 
+  
+  async function fetchReviews(){
+    try {
+      await reviewsService.fetchReviews()
+    }
+    catch (error: any){
+      Pop.error(error);
+    }
+  }
+  
+  const reviewcards = AppState.reviews?.slice().reverse().map(review => (<ReviewCard key={review.id} review={review} />));
+  
 
   return (
     <div className="bg-dark">
@@ -40,11 +58,25 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-      <div className="container mt-4">
-        <h4>Browse Games</h4>
-            <div className="row">
-              {games}
-            </div>
-      </div>
+    <div className="bg-dark">
+      
+        <div className="container mt-4">
+          <h4>Browse Games</h4>
+          <div className="row">
+            {gamecards}
+          </div>
+          <div className="center">
+            <button className="browse-btn mt-3">Browse All Games</button>
+          </div>
+          <h4>All Reviews</h4>
+          <div className="row">
+            {reviewcards}
+          </div>
+        </div>
+      
+    </div>
   </div>
-  )}
+)}
+
+
+export default observer(HomePage);
