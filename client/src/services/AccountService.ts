@@ -6,6 +6,11 @@ import { api } from './AxiosService.ts'
 let fetching = false
 
 class AccountService {
+  async updateAccount(accountData: { name: string; picture: string }) {
+    const response = await api.put('account', accountData)
+    logger.log('updating account', response.data)
+    AppState.account = new Account(response.data)
+  }
   async getAccount() {
     try {
       if (AppState.account) {

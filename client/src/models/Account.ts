@@ -3,12 +3,14 @@ export class Account {
   email: string
   name: string
   picture: string
+  createdAt: Date
 
   constructor(data: Account) {
     this.id = data.id
     this.email = data.email
     this.name = data.name
     this.picture = data.picture
+    this.createdAt = new Date(data.createdAt)
     // TODO add additional properties if needed
   }
 }

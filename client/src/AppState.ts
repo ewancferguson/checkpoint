@@ -16,6 +16,7 @@ class ObservableAppState {
   activeGame: DetailedGame | null = null
   gameReviews: Review[] | null = null
   activeReview: Review | null = null
+  profileReviews: Review[] | null = null
 
   constructor() {
     makeAutoObservable(this)
