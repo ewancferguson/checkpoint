@@ -5,6 +5,7 @@ import { Identity } from '@bcwdev/auth0provider-client'
 import { Game } from "./models/Game.ts"
 import { Review } from "./models/Review.ts"
 import { DetailedGame } from "./models/DetailedGame.ts"
+import { Comment } from "./models/Comment.ts"
 
 
 class ObservableAppState {
@@ -18,6 +19,7 @@ class ObservableAppState {
   activeReview: Review | null = null
   profileReviews: Review[] | null = null
   activeProfile: Profile | null = null
+  comments: Comment[] | null = null
 
   constructor() {
     makeAutoObservable(this)
