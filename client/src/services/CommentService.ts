@@ -4,6 +4,11 @@ import { logger } from "../utils/Logger";
 import { api } from "./AxiosService";
 
 class CommentService {
+  async deleteComment(commentId: string) {
+    const response = await api.delete(`/api/comments/${commentId}`);
+    const commentIndex = AppState.comments?.findIndex(comment => comment.id === commentId);
+    AppState.comments?.splice(commentIndex!, 1);
+  }
   async getCommentsByReview(reviewId: string) {
     const response = await api.get(`/api/reviews/${reviewId}/comments`);
     logger.log("Comments by review", response.data);
