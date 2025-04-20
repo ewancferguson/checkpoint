@@ -1,5 +1,4 @@
-import { observer } from "mobx-react";
-import { AppState } from "../AppState.js";
+
 import { Game } from "../models/Game.js";
 import '../assets/scss/pages/HomePage.scss'
 import { Link } from "react-router-dom";

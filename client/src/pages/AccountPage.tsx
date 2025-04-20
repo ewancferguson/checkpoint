@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { AppState } from '../AppState';
 import Pop from '../utils/Pop';
 import { reviewsService } from '../services/ReviewsService';

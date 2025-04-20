@@ -8,7 +8,6 @@ export default function CreateReview() {
   const [body, setBody] = useState<string>(""); // Explicitly define the type for body
   const [rating, setRating] = useState<number>(0); // Explicitly define the type for rating
   const gameId = AppState.activeGame?.id
-  const userId = AppState.account?.id
   const handleStarClick = (value: number) => {
     setRating(value); // Update the selected rating
   };

@@ -3,10 +3,9 @@ import { AppState } from "../AppState.js";
 import { useParams } from "react-router-dom";
 import Pop from "../utils/Pop.js";
 import { gamesService } from "../services/GamesService.js";
-import { useEffect, useState } from "react";
+import { useEffect,} from "react";
 import { logger } from "../utils/Logger.js";
 import "../assets/scss/pages/GameDetailsPage.scss";
-import { DetailedGame } from "../models/DetailedGame.js";
 import { reviewsService } from "../services/ReviewsService.js";
 import GameDetailReview from "../components/GameDetailReview.js";
 import CreateReview from "../components/CreateReview.js";
@@ -15,7 +14,7 @@ import { favoriteService } from "../services/FavoriteService.js";
 function GameDetailsPage() {
   const { gameId } = useParams<{ gameId: string }>();
 
-  const reviews = AppState.reviews || [];
+  
   const game = AppState.activeGame || null;
   const favoriteProfiles = AppState.favoriteProfiles || [];
   const account  = AppState.account || null; 

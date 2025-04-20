@@ -1,14 +1,11 @@
 import { createHashRouter } from 'react-router-dom';
 import { App } from './App.tsx';
-import { accountService } from './services/AccountService.ts';
 import AuthGuard from './utils/AuthGuard.js';
 import ErrorPage from './pages/ErrorPage.tsx';
 import HomePage from './pages/HomePage.tsx';
-import AboutPage from './pages/GameListPage.tsx';
 import AccountPage from './pages/AccountPage.tsx';
 import GameDetailsPage from './pages/GameDetailsPage';
 import GameListPage from './pages/GameListPage.tsx';
-import { Profile } from './models/Account.ts';
 import ProfilePage from './pages/ProfilePage.tsx';
 
 
