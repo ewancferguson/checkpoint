@@ -11,6 +11,8 @@
     "moduleResolution": "node",
     "types": ["node"],
     "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
