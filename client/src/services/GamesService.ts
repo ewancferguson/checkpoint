@@ -9,6 +9,7 @@ class GamesService{
 
 
   async getGameById(gameId: string) {
+    AppState.activeGame = null
     const response = await rawgApi.get(`games/${gameId}`)
     logger.log('getting game by id', response.data)
     const game = new DetailedGame(response.data)

@@ -40,9 +40,12 @@ function ReviewCard({ review }: { review: Review }) {
             <Link to={`/games/${review.game.gameId}`} className="text-decoration-none text-white">
               <h5 className="mb-1">{review.game.name}</h5>
             </Link>
-            <Link to={`/profile/${review.creatorId}`}>
-              <div className="text-white small mb-2">Reviewed by <strong className="text-white">{review.creator.name}</strong> • {review.createdAt.toLocaleDateString()}</div>
+            <Link to={AppState.account?.id === review.creatorId ? '/account' : `/profile/${review.creatorId}`}>
+                <div className="text-white small mb-2">
+                  Reviewed by <strong className="text-white">{review.creator.name}</strong> • {review.createdAt.toLocaleDateString()}
+                </div>
             </Link>
+
             <p className="mb-2">
               {review.body.length > 100 ? review.body.slice(0, 100) + '...' : review.body}
             </p>

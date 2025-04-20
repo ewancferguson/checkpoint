@@ -6,7 +6,7 @@ import { AppState } from "../AppState";
 import Pop from "../utils/Pop";
 import { reviewsService } from "../services/ReviewsService";
 import { Modal } from "bootstrap";
-import { commentService } from "../services/CommentService"; // make sure this is imported
+import { commentService } from "../services/CommentService";
 import CommentCard from "./CommentCard";
 
 function ReviewModal({ review }: { review: Review | null }) {
@@ -23,10 +23,10 @@ function ReviewModal({ review }: { review: Review | null }) {
   }, [review]);
 
   const isCreator = review?.creator.id === AppState.account?.id;
+  const account = AppState.account;
 
   async function updateReview(formData: React.FormEvent<HTMLFormElement>) {
     formData.preventDefault();
-
     if (!review || !review.id) {
       Pop.error("Review is not available.");
       return;
@@ -69,7 +69,6 @@ function ReviewModal({ review }: { review: Review | null }) {
       await commentService.createComment(commentData);
       Pop.success("Comment submitted!");
       setCommentBody("");
-      // Optionally refresh comments if you're showing them
       getCommentsByReview(review);
     } catch (error: any) {
       Pop.error(error);
@@ -84,7 +83,9 @@ function ReviewModal({ review }: { review: Review | null }) {
     }
   }
 
-  const commentcards = AppState.comments?.slice().reverse().map(comment => (<CommentCard key={comment.id} comment={comment} />));
+  const commentcards = AppState.comments?.slice().reverse().map(comment => (
+    <CommentCard key={comment.id} comment={comment} />
+  ));
 
   return (
     <div
@@ -118,9 +119,15 @@ function ReviewModal({ review }: { review: Review | null }) {
                   />
                 </div>
                 <div className="col-md-8">
-                  <h4>{review.game.name}</h4>
-                  <p className="mb-1">
+                <Link to={`/games/${review.game.gameId}`} className="text-decoration-none text-white">
+                  <h4 data-bs-dismiss="modal">{review.game.name}</h4>
+                </Link>
+                  <Link to={account?.id === review.creatorId ? '/account' : `/profile/${review.creatorId}`}>
+                  <p data-bs-dismiss="modal" className="mb-1 text-white">
                     Reviewed by <strong>{review.creator.name}</strong> on{" "}
+                  </p>
+                  </Link>
+                  <p>
                     {review.createdAt.toLocaleDateString()}
                   </p>
                   <div className="mb-3">
@@ -148,17 +155,16 @@ function ReviewModal({ review }: { review: Review | null }) {
                           value={editableBody}
                           onChange={(e) => setEditableBody(e.target.value)}
                         />
+                      <div className="d-flex gap-2 flex-wrap">
                         <button type="submit" className="btn btn-primary">
                           Save Changes
                         </button>
-                      </form>
-                      <button
-                        type="button"
-                        className="btn btn-danger ms-3"
-                        onClick={() => deleteReview(review.id)}
-                      >
-                        Delete Review
-                      </button>
+                        <button type="button" className="btn btn-danger" onClick={() => deleteReview(review.id)} >
+                          Delete Review
+                          </button>
+                          </div>
+                          </form>
+
                     </>
                   ) : (
                     <>
@@ -177,32 +183,34 @@ function ReviewModal({ review }: { review: Review | null }) {
               <div className="text-center py-5">Loading review...</div>
             )}
 
-            {/* Comment Form */}
             <hr className="border-secondary mt-5" />
-            <h5>Leave a Comment</h5>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                submitComment();
-              }}
-            >
-              <div className="mb-3">
-                <textarea
-                  className="form-control bg-secondary text-light"
-                  placeholder="Write your comment..."
-                  rows={3}
-                  value={commentBody}
-                  onChange={(e) => setCommentBody(e.target.value)}
-                  required
-                />
-              </div>
-              <button type="submit" className="btn btn-outline-light">
-                Submit Comment
-              </button>
-            </form>
+            {account && (
+              <>
+                <h5>Leave a Comment</h5>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    submitComment();
+                  }}
+                >
+                  <div className="mb-3">
+                    <textarea
+                      className="form-control bg-secondary text-light"
+                      placeholder="Write your comment..."
+                      rows={3}
+                      value={commentBody}
+                      onChange={(e) => setCommentBody(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-outline-light">
+                    Submit Comment
+                  </button>
+                </form>
+                <hr className="border-secondary mt-4" />
+              </>
+            )}
 
-            {/* Display Comments */}
-            <hr className="border-secondary mt-4" />
             <h5>All Comments</h5>
             <div className="mt-3">
               {commentcards?.length ? commentcards : <p className="text-center">No comments yet.</p>}
