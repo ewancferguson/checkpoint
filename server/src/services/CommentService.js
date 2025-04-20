@@ -1,4 +1,4 @@
-import { dbContext } from "../db/DbContext"
+import { dbContext } from '../db/DbContext.js'
 
 class CommentService {
 
@@ -20,6 +20,11 @@ class CommentService {
     }
     await commentToDelete.deleteOne()
     return 'comment gone'
+  }
+
+  async getCommentsByEvent(reviewId) {
+    const comments = await dbContext.Comments.find({ reviewId: reviewId }).populate('creator')
+    return comments
   }
 
 }

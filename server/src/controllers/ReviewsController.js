@@ -1,6 +1,7 @@
 import { Auth0Provider } from '@bcwdev/auth0provider'
 import BaseController from "../utils/BaseController.js";
 import { reviewsService } from "../services/ReviewsService.js";
+import { commentService } from '../services/CommentService.js';
 
 
 export class ReviewsController extends BaseController {
@@ -9,6 +10,7 @@ export class ReviewsController extends BaseController {
     this.router
       .get('', this.getAll)
       .get('/:reviewId', this.getById)
+      .get('/:reviewId/comments', this.getCommentsByReviewId)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.create)
       .put('/:reviewId', this.editReview)
@@ -79,6 +81,14 @@ export class ReviewsController extends BaseController {
     }
   }
 
-
+  async getCommentsByReviewId(request, response, next) {
+    try {
+      const reviewId = request.params.reviewId
+      const comments = await commentService.getCommentsByReviewId(reviewId)
+      response.send(comments)
+    } catch (error) {
+      next(error)
+    }
+  }
 
 }
