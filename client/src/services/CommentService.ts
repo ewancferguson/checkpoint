@@ -4,6 +4,12 @@ import { logger } from "../utils/Logger";
 import { api } from "./AxiosService";
 
 class CommentService {
+  async getCommentsByReview(reviewId: string) {
+    const response = await api.get(`/api/reviews/${reviewId}/comments`);
+    logger.log("Comments by review", response.data);
+    const comments = response.data.map((commentPOJO: Comment) => new Comment(commentPOJO));
+    AppState.comments = comments;
+  }
   async createComment(commentData: { body: string; reviewId: string | undefined; }) {
     const response = await api.post("/api/comments", commentData);
     logger.log("Comment created", response.data);

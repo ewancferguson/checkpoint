@@ -10,7 +10,7 @@ class CommentService {
 
 
   async deleteComment(commentId, userId) {
-    const commentToDelete = await dbContext.Comments.findById(commentId)
+    const commentToDelete = await dbContext.Comment.findById(commentId)
 
     if (commentToDelete == null) {
       throw new Error("Invalid Id");
@@ -22,8 +22,8 @@ class CommentService {
     return 'comment gone'
   }
 
-  async getCommentsByEvent(reviewId) {
-    const comments = await dbContext.Comments.find({ reviewId: reviewId }).populate('creator')
+  async getCommentsByReviewId(reviewId) {
+    const comments = await dbContext.Comment.find({ reviewId: reviewId }).populate('creator')
     return comments
   }
 

@@ -7,6 +7,7 @@ import Pop from "../utils/Pop";
 import { reviewsService } from "../services/ReviewsService";
 import { Modal } from "bootstrap";
 import { commentService } from "../services/CommentService"; // make sure this is imported
+import CommentCard from "./CommentCard";
 
 function ReviewModal({ review }: { review: Review | null }) {
   const [editableBody, setEditableBody] = useState("");
@@ -17,6 +18,7 @@ function ReviewModal({ review }: { review: Review | null }) {
     if (review) {
       setEditableBody(review.body);
       setEditableRating(review.rating);
+      getCommentsByReview(review);
     }
   }, [review]);
 
@@ -68,10 +70,21 @@ function ReviewModal({ review }: { review: Review | null }) {
       Pop.success("Comment submitted!");
       setCommentBody("");
       // Optionally refresh comments if you're showing them
+      getCommentsByReview(review);
     } catch (error: any) {
       Pop.error(error);
     }
   }
+
+  async function getCommentsByReview(review: Review) {
+    try {
+      await commentService.getCommentsByReview(review.id);
+    } catch (error: any) {
+      Pop.error(error);
+    }
+  }
+
+  const commentcards = AppState.comments?.slice().reverse().map(comment => (<CommentCard key={comment.id} comment={comment} />));
 
   return (
     <div
@@ -187,6 +200,13 @@ function ReviewModal({ review }: { review: Review | null }) {
                 Submit Comment
               </button>
             </form>
+
+            {/* Display Comments */}
+            <hr className="border-secondary mt-4" />
+            <h5>All Comments</h5>
+            <div className="mt-3">
+              {commentcards?.length ? commentcards : <p className="text-center">No comments yet.</p>}
+            </div>
           </div>
           <div className="modal-footer border-secondary">
             {!isCreator && (
