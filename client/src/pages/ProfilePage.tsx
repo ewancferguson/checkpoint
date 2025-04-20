@@ -8,6 +8,7 @@ import ReviewCard from "../components/ReviewCard";
 import { observer } from "mobx-react";
 import { favoriteService } from "../services/FavoriteService";
 import GameCard from "../components/Gamecard";
+import { logger } from "../utils/Logger";
 
 function ProfilePage() {
   const { profileId } = useParams<{ profileId: string }>();
@@ -17,7 +18,7 @@ function ProfilePage() {
     if (profileId) {
       getProfileById(profileId);
       getReviewsByUserID(profileId);
-      getFavoritesByProfile()
+      getFavoritesByProfile(profileId)
     }
   }, [profileId]);
 
@@ -37,19 +38,18 @@ function ProfilePage() {
     }
   }
 
-  async function getFavoritesByProfile(){
+  async function getFavoritesByProfile(profileId: string){
       try {
-        const accountId = account?.id
-        await favoriteService.getFavoritesByProfile(accountId)
+        await favoriteService.getFavoritesByProfile(profileId)
       }
       catch (error: any){
         Pop.error(error);
       }
     }
 
-     const gamecards = AppState.profileFavorites?.slice().reverse().map(fav => (
+    const gamecards = AppState.profileFavorites?.slice().reverse().map(fav => (
         fav.game && <GameCard key={fav.game.id} game={fav.game} />
-      ));
+    ));
 
 
   const reviewcards = AppState.profileReviews?.slice().reverse().map(review => (
@@ -98,7 +98,7 @@ function ProfilePage() {
                 {reviewcards?.length ? reviewcards : <p className="text-center text-light text-opacity-75">No reviews found.</p>}
               </div>
               <h4>Their Favorites</h4>
-                <div className="row">
+                <div className="row mt-3">
                     {gamecards}
                 </div>
               </div>
