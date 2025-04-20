@@ -22,6 +22,7 @@ class ObservableAppState {
   activeProfile: Profile | null = null
   comments: Comment[] | null = null
   favoriteProfiles: Favorite[] | null = null
+  profileFavorites: Favorite[] | null = null
 
   constructor() {
     makeAutoObservable(this)

@@ -6,6 +6,8 @@ import { AppState } from "../AppState";
 import { reviewsService } from "../services/ReviewsService";
 import ReviewCard from "../components/ReviewCard";
 import { observer } from "mobx-react";
+import { favoriteService } from "../services/FavoriteService";
+import GameCard from "../components/Gamecard";
 
 function ProfilePage() {
   const { profileId } = useParams<{ profileId: string }>();
@@ -15,6 +17,7 @@ function ProfilePage() {
     if (profileId) {
       getProfileById(profileId);
       getReviewsByUserID(profileId);
+      getFavoritesByProfile()
     }
   }, [profileId]);
 
@@ -33,6 +36,21 @@ function ProfilePage() {
       Pop.error(error);
     }
   }
+
+  async function getFavoritesByProfile(){
+      try {
+        const accountId = account?.id
+        await favoriteService.getFavoritesByProfile(accountId)
+      }
+      catch (error: any){
+        Pop.error(error);
+      }
+    }
+
+     const gamecards = AppState.profileFavorites?.slice().reverse().map(fav => (
+        fav.game && <GameCard key={fav.game.id} game={fav.game} />
+      ));
+
 
   const reviewcards = AppState.profileReviews?.slice().reverse().map(review => (
     <ReviewCard key={review.id} review={review} />
@@ -68,19 +86,25 @@ function ProfilePage() {
             </div>
           </div>
         </div>
+      </div>
 
         {/* Details Section */}
         <div className="row">
           <div className="col-12">
+              <div className="container">
             <div className="bg-dark border border-light text-white rounded shadow-sm p-4 profile-glow">
               <h4 className="mb-3 fw-semibold">Their Reviews</h4>
               <div className="row">
                 {reviewcards?.length ? reviewcards : <p className="text-center text-light text-opacity-75">No reviews found.</p>}
               </div>
+              <h4>Their Favorites</h4>
+                <div className="row">
+                    {gamecards}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { profileService } from '../services/ProfileService.js'
 import { reviewsService } from '../services/ReviewsService.js'
+import { favoritesService } from "../services/FavoritesService.js";
 import BaseController from '../utils/BaseController.js'
 
 export class ProfilesController extends BaseController {
@@ -9,6 +10,7 @@ export class ProfilesController extends BaseController {
       .get('', this.getProfiles)
       .get('/:id', this.getProfile)
       .get('/:id/reviews', this.getProfileReviews)
+      .get('/:id/favorites', this.getFavorites)
   }
 
   async getProfiles(req, res, next) {
@@ -36,6 +38,15 @@ export class ProfilesController extends BaseController {
       response.send(reviews)
     } catch (error) {
       next(error)
+    }
+  }
+
+  async getFavorites(request, response, next) {
+    try {
+      const profileId = request.params.id
+      const favorites = await favoritesService.getFavoritesByProfile(profileId)
+      response.send(favorites)
+    } catch (error) {
     }
   }
 }

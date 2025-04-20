@@ -5,6 +5,8 @@ import { reviewsService } from '../services/ReviewsService';
 import ReviewCard from '../components/ReviewCard';
 import { observer } from 'mobx-react';
 import { accountService } from '../services/AccountService';
+import { favoriteService } from '../services/FavoriteService';
+import GameCard from '../components/Gamecard';
 
 const AccountPage = () => {
   const [activeTab, setActiveTab] = useState('details');
@@ -22,6 +24,7 @@ const AccountPage = () => {
 
   useEffect(() => {
     getReviewsByUserId();
+    getFavoritesByProfile()
   }, [account?.id]);
 
   async function updateAccount() {
@@ -44,6 +47,21 @@ const AccountPage = () => {
       Pop.error(error);
     }
   }
+
+  async function getFavoritesByProfile(){
+    try {
+      const accountId = account?.id
+      await favoriteService.getFavoritesByProfile(accountId)
+    }
+    catch (error: any){
+      Pop.error(error);
+    }
+  }
+
+  const gamecards = AppState.profileFavorites?.slice().reverse().map(fav => (
+    fav.game && <GameCard key={fav.game.id} game={fav.game} />
+  ));
+  
 
   const reviewcards = AppState.profileReviews?.slice().reverse().map((review) => (
     <ReviewCard key={review.id} review={review} />
@@ -70,8 +88,6 @@ const AccountPage = () => {
               </div>
             </div>
           </div>
-
-          {/* Card with Tabs */}
           <div className="col-12">
             <div className="bg-dark border border-light text-white rounded shadow-sm account-glow">
               <ul className="nav nav-tabs bg-dark px-3 pt-3 rounded-top border-bottom border-light">
@@ -101,6 +117,10 @@ const AccountPage = () => {
                     <h4 className="fw-semibold mb-3">Your Reviews</h4>
                     <div className="row">
                       {reviewcards?.length ? reviewcards : <p className="text-center text-light text-opacity-75">No reviews found.</p>}
+                    </div>
+                    <h4>Your Favorites</h4>
+                    <div className='row'>
+                        {gamecards}
                     </div>
                   </div>
 

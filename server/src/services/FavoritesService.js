@@ -32,6 +32,11 @@ class FavoritesService {
     return favorites
   }
 
+  async getFavoritesByProfile(profileId) {
+    const favorites = await dbContext.Favorite.find({ accountId: profileId }).populate('game')
+    return favorites
+  }
+
 }
 
 
