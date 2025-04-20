@@ -1,7 +1,7 @@
 import { gamesService } from '../services/GamesService.js';
 import { reviewsService } from '../services/ReviewsService.js';
 import BaseController from "../utils/BaseController.js";
-
+import { favoritesService } from "../services/FavoritesService.js";
 
 export class GamesController extends BaseController {
   constructor() {
@@ -10,6 +10,7 @@ export class GamesController extends BaseController {
       .get('', this.getAll)
       .get('/:gameId', this.getById)
       .get('/:gameId/reviews', this.getReviewsByGameId)
+      .get('/:gameId/favorites', this.getFavorites)
   }
 
   /**
@@ -41,6 +42,7 @@ export class GamesController extends BaseController {
 
   async getReviewsByGameId(request, response, next) {
     try {
+
       const gameId = request.params.gameId
       const reviews = await reviewsService.getReviewsByGameId(gameId)
       response.send(reviews)
@@ -48,5 +50,19 @@ export class GamesController extends BaseController {
       next(error)
     }
   }
+
+
+  async getFavorites(request, response, next) {
+    try {
+      const gameId = request.params.gameId;
+
+
+      const favorites = await favoritesService.getFavorites(gameId);
+      response.send(favorites);
+    } catch (error) {
+      next(error);
+    }
+  }
+
 
 }

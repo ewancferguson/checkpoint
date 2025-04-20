@@ -1,4 +1,4 @@
-import { dbContext } from "../db/DbContext"
+import { dbContext } from "../db/DbContext.js"
 
 class FavoritesService {
 
@@ -24,6 +24,12 @@ class FavoritesService {
     }
     await favoriteToDelete.deleteOne()
     return 'favorite gone'
+  }
+
+
+  async getFavorites(gameId) {
+    const favorites = await dbContext.Favorite.find({ gameId: gameId }).populate('account')
+    return favorites
   }
 
 }

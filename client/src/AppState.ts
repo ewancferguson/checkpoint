@@ -6,6 +6,7 @@ import { Game } from "./models/Game.ts"
 import { Review } from "./models/Review.ts"
 import { DetailedGame } from "./models/DetailedGame.ts"
 import { Comment } from "./models/Comment.ts"
+import { Favorite } from "./models/Favorite.ts"
 
 
 class ObservableAppState {
@@ -20,6 +21,7 @@ class ObservableAppState {
   profileReviews: Review[] | null = null
   activeProfile: Profile | null = null
   comments: Comment[] | null = null
+  favoriteProfiles: Favorite[] | null = null
 
   constructor() {
     makeAutoObservable(this)

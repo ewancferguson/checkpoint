@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 export const FavoriteSchema = new Schema({
   accountId: { type: Schema.ObjectId, required: true, ref: "Account" },
-  gameId: { type: Schema.ObjectId, required: true, ref: "Game" },
+  gameId: { type: Number, required: true, ref: "Game" },
 },
   {
     timestamps: true,

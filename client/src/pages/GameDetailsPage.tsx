@@ -10,18 +10,23 @@ import { DetailedGame } from "../models/DetailedGame.js";
 import { reviewsService } from "../services/ReviewsService.js";
 import GameDetailReview from "../components/GameDetailReview.js";
 import CreateReview from "../components/CreateReview.js";
+import { favoriteService } from "../services/FavoriteService.js";
 
 function GameDetailsPage() {
   const { gameId } = useParams<{ gameId: string }>();
 
   const reviews = AppState.reviews || [];
   const game = AppState.activeGame || null;
-  
+  const favoriteProfiles = AppState.favoriteProfiles || [];
+  const account = AppState.account || {}; 
+
+  const hasFavorited = favoriteProfiles.some(fav => fav.accountId === AppState.account?.id);
 
   useEffect(() => {
     if (gameId) {
       GetGameById(gameId);
       fetchReviewsByGameId(gameId);
+      getFavoriteProfiles(gameId);
     }
   }, [gameId]);
 
@@ -38,6 +43,15 @@ function GameDetailsPage() {
     try {
       await reviewsService.fetchReviewsByGameId(gameId);
     } catch (error: any) {
+      Pop.error(error);
+    }
+  }
+
+  async function getFavoriteProfiles(gameId: string) {
+    try {
+      await favoriteService.getFavoriteProfiles(gameId);
+    }
+    catch (error: any){
       Pop.error(error);
     }
   }
@@ -67,7 +81,18 @@ function GameDetailsPage() {
                   <strong>Description:</strong>{" "}
                   {game.description_raw || "No description available."}
                 </p>
-                <p className="card-text">
+                <p className="card-text">{favoriteProfiles.length} people have favorited this game!</p>
+
+                {/* Only show the button if account exists and has an id */}
+                {account && account && (
+                  hasFavorited ? (
+                    <button className="btn btn-outline-danger">Remove Favorite</button>
+                  ) : (
+                    <button className="btn btn-outline-success">Favorite Game</button>
+                  )
+                )}
+
+                <p className="card-text mt-2">
                   <strong>Genres:</strong>{" "}
                   {game.genres
                     ? game.genres.map((genre: any) => genre.name).join(", ")
