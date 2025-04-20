@@ -12,6 +12,7 @@ class FavoriteService {
   }
   async deleteFavorite(favoriteId: string | undefined) {
     const response = await api.delete(`api/favorites/${favoriteId}`)
+    logger.log(response)
     const favoriteIndex = AppState.favoriteProfiles?.findIndex(favorite => favorite.id == favoriteId)
       AppState.favoriteProfiles?.splice(favoriteIndex!, 1);
   }

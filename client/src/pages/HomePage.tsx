@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect,} from "react";
 import '../assets/scss/pages/HomePage.scss'
 import Pop from "../utils/Pop";
 import { gamesService } from "../services/GamesService";

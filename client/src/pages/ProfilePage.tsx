@@ -8,7 +8,7 @@ import ReviewCard from "../components/ReviewCard";
 import { observer } from "mobx-react";
 import { favoriteService } from "../services/FavoriteService";
 import GameCard from "../components/Gamecard";
-import { logger } from "../utils/Logger";
+
 
 function ProfilePage() {
   const { profileId } = useParams<{ profileId: string }>();

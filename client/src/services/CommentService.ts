@@ -6,6 +6,7 @@ import { api } from "./AxiosService";
 class CommentService {
   async deleteComment(commentId: string) {
     const response = await api.delete(`/api/comments/${commentId}`);
+    logger.log(response)
     const commentIndex = AppState.comments?.findIndex(comment => comment.id === commentId);
     AppState.comments?.splice(commentIndex!, 1);
   }

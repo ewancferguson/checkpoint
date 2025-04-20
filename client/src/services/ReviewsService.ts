@@ -1,4 +1,4 @@
-import { App } from "../App";
+
 import { AppState } from "../AppState";
 import { Review } from "../models/Review";
 import { logger } from "../utils/Logger";
