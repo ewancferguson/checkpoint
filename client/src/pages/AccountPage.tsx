@@ -9,7 +9,7 @@ import { accountService } from '../services/AccountService';
 const AccountPage = () => {
   const [activeTab, setActiveTab] = useState('details');
   const [editableName, setEditableName] = useState('');
-    const [editablePicture, setEditablePicture] = useState('');
+  const [editablePicture, setEditablePicture] = useState('');
 
   const account = AppState.account;
 
@@ -19,145 +19,131 @@ const AccountPage = () => {
       setEditablePicture(account.picture);
     }
   }, [account?.name]);
-  
 
   useEffect(() => {
     getReviewsByUserId();
-  }
-  , [account?.id]);
-
+  }, [account?.id]);
 
   async function updateAccount() {
     try {
       const accountData = {
         name: editableName,
         picture: editablePicture,
-      }
+      };
       await accountService.updateAccount(accountData);
       Pop.success('Account Updated!');
-    }
-    catch (error: any){
+    } catch (error: any) {
       Pop.error(error);
     }
   }
-
-
 
   async function getReviewsByUserId() {
     try {
       await reviewsService.getReviewsByUserID(account?.id);
-
-    }
-    catch (error:any){
+    } catch (error: any) {
       Pop.error(error);
     }
-  
   }
 
-    const reviewcards = AppState.profileReviews?.slice().reverse().map(review => (<ReviewCard key={review.id} review={review} />));
-
+  const reviewcards = AppState.profileReviews?.slice().reverse().map((review) => (
+    <ReviewCard key={review.id} review={review} />
+  ));
 
   return (
     <div className="bg-dark text-white min-vh-100 py-4">
-      <div className='container-fluid'>
-
-      <div className="row">
-        <div className="col-12 mb-4">
-          <div className="d-flex align-items-center p-4 bg-secondary shadow rounded">
-            <img
-              src={account?.picture || 'https://via.placeholder.com/150'}
-              alt="User Avatar"
-              className="rounded-circle me-4 border border-3 border-light"
-              style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+      <div className="container-fluid">
+        {/* Header */}
+        <div className="row">
+          <div className="col-12 mb-4">
+            <div className="d-flex align-items-center p-4 bg-dark border border-light rounded shadow account-glow">
+              <img
+                src={account?.picture || 'https://via.placeholder.com/150'}
+                alt="User Avatar"
+                className="rounded-circle me-4 border border-3 border-light"
+                style={{ width: '100px', height: '100px', objectFit: 'cover' }}
               />
-            <div>
-              <h3 className="mb-1">{account?.name || 'Anonymous'}</h3>
-              <p className="mb-0 text-light small">Member since {account?.createdAt?.toLocaleDateString() || 'N/A'}</p>
+              <div>
+                <h3 className="mb-1 fw-bold">{account?.name || 'Anonymous'}</h3>
+                <p className="mb-0 text-light small text-opacity-75">
+                  Member since {account?.createdAt?.toLocaleDateString() || 'N/A'}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="col-12">
-          <div className="card bg-secondary text-white shadow rounded">
-            <ul className="nav nav-tabs bg-dark px-3 pt-3 rounded-top" id="accountTab" role="tablist">
-              <li className="nav-item" role="presentation">
-                <button
-                  className={`nav-link ${activeTab === 'details' ? 'active text-white' : 'text-light'}`}
-                  id="details-tab"
-                  type="button"
-                  onClick={() => setActiveTab('details')}
+
+          {/* Card with Tabs */}
+          <div className="col-12">
+            <div className="bg-dark border border-light text-white rounded shadow-sm account-glow">
+              <ul className="nav nav-tabs bg-dark px-3 pt-3 rounded-top border-bottom border-light">
+                <li className="nav-item" role="presentation">
+                  <button
+                    className={`nav-link fw-semibold ${activeTab === 'details' ? 'active text-white border-bottom border-white' : 'text-light'}`}
+                    onClick={() => setActiveTab('details')}
                   >
-                  Details
-                </button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button
-                  className={`nav-link ${activeTab === 'edit' ? 'active text-white' : 'text-light'}`}
-                  id="edit-tab"
-                  type="button"
-                  onClick={() => setActiveTab('edit')}
+                    Details
+                  </button>
+                </li>
+                <li className="nav-item" role="presentation">
+                  <button
+                    className={`nav-link fw-semibold ${activeTab === 'edit' ? 'active text-white border-bottom border-white' : 'text-light'}`}
+                    onClick={() => setActiveTab('edit')}
                   >
-                  Edit Account
-                </button>
-              </li>
-            </ul>
+                    Edit Account
+                  </button>
+                </li>
+              </ul>
+
+              {/* Tabs */}
+              <div className="container mt-3">
+                <div className="tab-content">
+                  {/* Details Tab */}
+                  <div className={`tab-pane fade ${activeTab === 'details' ? 'show active' : ''}`} id="details">
+                    <h4 className="fw-semibold mb-3">Your Reviews</h4>
+                    <div className="row">
+                      {reviewcards?.length ? reviewcards : <p className="text-center text-light text-opacity-75">No reviews found.</p>}
+                    </div>
                   </div>
 
-            <div className="container mt-3"> 
-            <div className="tab-content">
-              <div
-                className={`tab-pane fade ${activeTab === 'details' ? 'show active' : ''}`}
-                id="details"
-                role="tabpanel"
-              >
-                <div>
-                  <h4>
-                    Reviews
-                  </h4>
-                  <div className='row'>
-                    {reviewcards?.length ? reviewcards : <p className='text-center'>No reviews found.</p>}
+                  {/* Edit Tab */}
+                  <div className={`tab-pane fade ${activeTab === 'edit' ? 'show active' : ''}`} id="edit">
+                    <div className="p-4">
+                      <h5 className="mb-4 fw-semibold">Edit Account</h5>
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          updateAccount();
+                        }}
+                      >
+                        <div className="mb-3">
+                          <label htmlFor="editName" className="form-label">Full Name</label>
+                          <input
+                            type="text"
+                            className="form-control bg-dark text-white border-light"
+                            id="editName"
+                            value={editableName}
+                            onChange={(e) => setEditableName(e.target.value)}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <label htmlFor="editPicture" className="form-label">Profile Picture</label>
+                          <input
+                            type="url"
+                            className="form-control bg-dark text-white border-light"
+                            id="editPicture"
+                            value={editablePicture}
+                            onChange={(e) => setEditablePicture(e.target.value)}
+                          />
+                        </div>
+                        <button type="submit" className="btn btn-outline-light">Save Changes</button>
+                      </form>
+                    </div>
                   </div>
-                </div>
-                </div>
-              </div>
-              <div
-                className={`tab-pane fade ${activeTab === 'edit' ? 'show active' : ''}`}
-                id="edit"
-                role="tabpanel"
-              >
-                <div className="p-4">
-                  <h5 className="text-white mb-4">Edit Account</h5>
-                  <form onSubmit={(e) => {
-                    e.preventDefault();
-                      updateAccount();
-                  }}>
-                    <div className="mb-3">
-                      <label htmlFor="editName" className="form-label">Full Name</label>
-                      <input
-                        type="text"
-                        className="form-control bg-dark text-white border-light"
-                        id="editName"
-                        defaultValue={account?.name}
-                        onChange={(e) => setEditableName(e.target.value)}
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="editPicture" className="form-label">Profile Picture</label>
-                      <input
-                        type="url"
-                        className="form-control bg-dark text-white border-light"
-                        id="editPicture"
-                        defaultValue={account?.picture}
-                        onChange={(e) => setEditablePicture(e.target.value)}
-                      />
-                    </div>
-                    <button type="submit" className="btn btn-outline-light">Save Changes</button>
-                  </form>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>  
+        </div>  
+      </div>
     </div>
   );
 };
