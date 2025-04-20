@@ -38,7 +38,7 @@ export class FavoriteController extends BaseController {
 
   async delete(request, response, next) {
     try {
-      const accountId = request.account.id
+      const accountId = request.userInfo.id
       const favoriteId = request.params.favoriteId
       await favoritesService.delete(favoriteId, accountId)
       return response.send('deleted')

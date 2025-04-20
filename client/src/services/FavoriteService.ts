@@ -4,6 +4,16 @@ import { logger } from "../utils/Logger";
 import { api } from "./AxiosService";
 
 class FavoriteService {
+  async deleteFavorite(favoriteId: string | undefined) {
+    const response = await api.delete(`api/favorites/${favoriteId}`)
+    const favoriteIndex = AppState.favoriteProfiles?.findIndex(favorite => favorite.id == favoriteId)
+      AppState.favoriteProfiles?.splice(favoriteIndex!, 1);
+  }
+  async createFavorite(gameData: { gameId: string | undefined; }) {
+    const response = await api.post('api/favorites', gameData)
+    const favorite = new Favorite(response.data)
+    AppState.favoriteProfiles?.push(favorite)
+  }
   async getFavoriteProfiles(gameId: string) {
     logger.log(gameId)
     const response = await api.get(`/api/games/${gameId}/favorites`);

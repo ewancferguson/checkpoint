@@ -18,9 +18,11 @@ function GameDetailsPage() {
   const reviews = AppState.reviews || [];
   const game = AppState.activeGame || null;
   const favoriteProfiles = AppState.favoriteProfiles || [];
-  const account = AppState.account || {}; 
+  const account  = AppState.account || null; 
 
   const hasFavorited = favoriteProfiles.some(fav => fav.accountId === AppState.account?.id);
+
+  const favoriteProfile = favoriteProfiles.find(fav => fav.gameId === Number(gameId) && fav.accountId === account?.id);
 
   useEffect(() => {
     if (gameId) {
@@ -56,6 +58,27 @@ function GameDetailsPage() {
     }
   }
 
+  async function createFavorite() {
+    try {
+      const gameData = {gameId: gameId}
+      await favoriteService.createFavorite(gameData)
+    }
+    catch (error: any){
+      Pop.error(error);
+    }
+  }
+
+  async function deleteFavorite() {
+    try {
+      const favoriteId = favoriteProfile?.id
+      logger.log(favoriteId)
+      await favoriteService.deleteFavorite(favoriteId)
+    }
+    catch (error: any){
+      Pop.error(error);
+    }
+  }
+
   const reviewcards = AppState.gameReviews?.slice().reverse().map(review => (
     <GameDetailReview key={review.id} review={review} />
   ));
@@ -84,11 +107,11 @@ function GameDetailsPage() {
                 <p className="card-text">{favoriteProfiles.length} people have favorited this game!</p>
 
                 {/* Only show the button if account exists and has an id */}
-                {account && account && (
+                {account  && (
                   hasFavorited ? (
-                    <button className="btn btn-outline-danger">Remove Favorite</button>
+                    <button onClick={deleteFavorite} className="btn btn-outline-danger">Remove Favorite</button>
                   ) : (
-                    <button className="btn btn-outline-success">Favorite Game</button>
+                    <button onClick={createFavorite} className="btn btn-outline-success">Favorite Game</button>
                   )
                 )}
 
