@@ -1,6 +1,7 @@
-import { fileURLToPath } from 'node:url'
-import react from '@vitejs/plugin-react-swc'
-import { defineConfig } from 'vite'
+import { fileURLToPath } from 'node:url';
+import { URL } from 'node:url'; // ✅ Needed for 'new URL()'
+import react from '@vitejs/plugin-react-swc';
+import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,6 +18,5 @@ export default defineConfig({
   server: {
     port: 8080
   },
-  // uncomment this to build for GitHub Pages
-  // base: '/checkpoint/'
-})
+  // base: '/checkpoint/' // Uncomment for GitHub Pages deployment
+});
