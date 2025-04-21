@@ -135,7 +135,7 @@ const AccountPage = () => {
                         }}
                       >
                         <div className="mb-3">
-                          <label htmlFor="editName" className="form-label">Full Name</label>
+                          <label htmlFor="editName" className="form-label">Name</label>
                           <input
                             type="text"
                             className="form-control bg-dark text-white border-light"

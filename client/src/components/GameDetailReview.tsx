@@ -36,7 +36,7 @@ function GameDetailReview({ review }: { review: Review }) {
                • {review.createdAt ? review.createdAt.toLocaleDateString() : "Unknown Date"}
             </div>
             <p className="mb-2">
-              {review.body.length > 100 ? review.body.slice(0, 100) + '...' : review.body}
+              {review.body.length > 100 ? review.body.slice(0, 150) + '...' : review.body}
             </p>
             <div className="d-flex align-items-center gap-2">
               <span className="badge bg-success">{review.rating}/5 <span className="mdi mdi-star"></span></span>

@@ -151,12 +151,13 @@ function ReviewModal({ review }: { review: Review | null }) {
                       <form onSubmit={updateReview}>
                         <textarea
                           className="form-control bg-secondary text-light mb-3"
+                          maxLength={1000}
                           rows={5}
                           value={editableBody}
                           onChange={(e) => setEditableBody(e.target.value)}
                         />
                       <div className="d-flex gap-2 flex-wrap">
-                        <button type="submit" className="btn btn-primary">
+                        <button data-bs-dismiss="modal" type="submit" className="btn btn-primary">
                           Save Changes
                         </button>
                         <button type="button" className="btn btn-danger" onClick={() => deleteReview(review.id)} >
@@ -171,9 +172,11 @@ function ReviewModal({ review }: { review: Review | null }) {
                       <p className="lead">{review.body}</p>
                       <Link
                         to={`/games/${review.game.gameId}`}
-                        className="btn btn-outline-light mt-3"
+                        
                       >
-                        View Game Details
+                        <button data-bs-dismiss="modal" className="btn btn-outline-light mt-3">
+                          View Game Details
+                          </button>
                       </Link>
                     </>
                   )}

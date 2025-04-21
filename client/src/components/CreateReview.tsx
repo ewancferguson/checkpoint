@@ -63,6 +63,7 @@ async function createReview(formData: React.FormEvent<HTMLFormElement>) {
                 <textarea
                   className="form-control bg-secondary text-light"
                   id="reviewBody"
+                  maxLength={1000}
                   rows={4}
                   placeholder="What did you think about this game?"
                   onChange={(e) => setBody(e.target.value)}

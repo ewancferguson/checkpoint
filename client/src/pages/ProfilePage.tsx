@@ -99,7 +99,7 @@ function ProfilePage() {
               </div>
               <h4>Their Favorites</h4>
                 <div className="row mt-3">
-                    {gamecards}
+                    {gamecards?.length ? gamecards : <p className="text-center text-light text-opacity-75">Browse games to add some favorites.</p>}
                 </div>
               </div>
             </div>

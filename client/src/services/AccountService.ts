@@ -2,6 +2,7 @@ import { AppState } from '../AppState.js'
 import { Account, Profile } from '../models/Account.js'
 import { logger } from '../utils/Logger.ts'
 import { api } from './AxiosService.ts'
+import { reviewsService } from './ReviewsService.ts'
 
 let fetching = false
 
@@ -17,6 +18,7 @@ class AccountService {
     const response = await api.put('account', accountData)
     logger.log('updating account', response.data)
     AppState.account = new Account(response.data)
+    reviewsService.getReviewsByUserID(AppState.account.id)
   }
   async getAccount() {
     try {
