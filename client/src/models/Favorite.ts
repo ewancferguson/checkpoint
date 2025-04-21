@@ -1,4 +1,4 @@
-import { Account, Profile } from "./Account";
+import { Profile } from "./Account";
 import { Game } from "./Game";
 
 export class Favorite {
