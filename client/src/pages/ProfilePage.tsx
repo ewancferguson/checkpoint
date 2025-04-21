@@ -67,7 +67,6 @@ function ProfilePage() {
   return (
     <div className="bg-dark text-white min-vh-100 py-4">
       <div className="container-fluid">
-        {/* Top Section */}
         <div className="row">
           <div className="col-12 mb-4">
             <div className="d-flex align-items-center p-4 bg-dark border border-light rounded shadow profile-glow">
@@ -87,8 +86,6 @@ function ProfilePage() {
           </div>
         </div>
       </div>
-
-        {/* Details Section */}
         <div className="row">
           <div className="col-12">
               <div className="container">
